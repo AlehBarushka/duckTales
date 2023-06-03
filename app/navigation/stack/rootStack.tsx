@@ -10,12 +10,12 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStackNavigator = () => {
   return (
-    <RootStack.Navigator initialRouteName={INITIAL_SCREEN}>
-      <RootStack.Screen
-        name={RootStackScreens.main}
-        component={Main}
-        options={{headerShown: false}}
-      />
+    <RootStack.Navigator
+      initialRouteName={INITIAL_SCREEN}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <RootStack.Screen name={RootStackScreens.main} component={Main} />
       <RootStack.Screen name={RootStackScreens.settings} component={Settings} />
     </RootStack.Navigator>
   );

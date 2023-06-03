@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import {AppState, StatusBar, StyleSheet, View} from 'react-native';
+import {AppState, StatusBar} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import Navigation from './navigation';
 
@@ -21,21 +22,17 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <>
       <StatusBar
         barStyle={'dark-content'}
         translucent
         backgroundColor="transparent"
       />
-      <Navigation />
-    </View>
+      <SafeAreaProvider>
+        <Navigation />
+      </SafeAreaProvider>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
