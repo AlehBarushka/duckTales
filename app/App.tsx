@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {AppState, StatusBar} from 'react-native';
+import {AppState} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import Navigation from './navigation';
@@ -22,16 +22,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <StatusBar
-        barStyle={'dark-content'}
-        translucent
-        backgroundColor="transparent"
-      />
-      <SafeAreaProvider>
-        <Navigation />
-      </SafeAreaProvider>
-    </>
+    //Для android плохо работает когда status bar стоит prop translucent
+    <SafeAreaProvider>
+      <Navigation />
+    </SafeAreaProvider>
   );
 };
 

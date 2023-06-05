@@ -1,6 +1,7 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {RootStackScreens} from '../../navigation/constants';
 import {RootNavigationType} from '../../navigation/types';
@@ -14,7 +15,7 @@ const Main = () => {
   const navigation = useNavigation<RootNavigationType>();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Main</Text>
       <Trash size={40} color={'red'} />
       <Plus size={40} color={'black'} />
@@ -24,7 +25,7 @@ const Main = () => {
         title="go to another"
         onPress={() => navigation.navigate(RootStackScreens.settings)}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -33,7 +34,7 @@ export default Main;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
   },
