@@ -1,14 +1,24 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+
 import {colors} from '../../styles';
 import Header from '../../components/Header';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Settings = () => {
+  const {top} = useSafeAreaInsets();
+
   return (
     <>
-      <Header title="Бар 1" />
-      <View style={styles.container}>
-        <Text style={styles.text}>Settings</Text>
+      <StatusBar
+        backgroundColor={colors.backgroundSecondary1}
+        barStyle={'dark-content'}
+      />
+      <View style={[styles.safeAreaContainer, {paddingTop: top}]}>
+        <Header title="Бар 1" />
+        <View style={styles.container}>
+          <Text style={styles.text}>Settings</Text>
+        </View>
       </View>
     </>
   );
@@ -17,6 +27,10 @@ const Settings = () => {
 export default Settings;
 
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: colors.backgroundSecondary1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.backgroundPrimary,

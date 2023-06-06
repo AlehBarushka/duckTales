@@ -4,4 +4,5 @@ export const colors = {
   backgroundSecondary2: '#D4D4D4',
   black: '#000000',
   gray: '#D4D4D4',
+  trash: '#FF3B30',
 } as const;
