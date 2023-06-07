@@ -15,17 +15,20 @@ type Props = {
   };
   isFirst?: boolean;
   navigateToSettings: () => void;
+  deleteBar: () => void;
 };
 
-const Card: React.FC<Props> = ({barItem, isFirst, navigateToSettings}) => {
+const Card: React.FC<Props> = ({
+  barItem,
+  isFirst,
+  deleteBar,
+  navigateToSettings,
+}) => {
   return (
     <View style={[styles.container, isFirst && styles.firstContainer]}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{barItem.title}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('Заглушка');
-          }}>
+        <TouchableOpacity onPress={deleteBar}>
           <Trash size={20} color={colors.trash} />
         </TouchableOpacity>
       </View>
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   firstContainer: {
-    marginTop: 0,
+    marginTop: 24,
   },
   titleContainer: {
     flexDirection: 'row',
