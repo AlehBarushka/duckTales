@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import React, {useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
 import {RootStackScreens} from '../../navigation/constants';
 import {RootNavigationType} from '../../navigation/types';
@@ -18,6 +19,7 @@ import Plus from '../../assets/svg/Plus';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {addBar, deleteBar} from '../../store/slices/barSlice';
 import {locales} from '../../locales/MainScreen';
+import {IBar} from '../../store/slices/types';
 
 const Main = () => {
   const navigation = useNavigation<RootNavigationType>();
@@ -27,14 +29,21 @@ const Main = () => {
   const dispatch = useAppDispatch();
   const bars = useAppSelector(state => state.bar.bars);
 
-  const {top} = useSafeAreaInsets();
-
-  const handleNavigateToSettings = () => {
-    navigation.navigate(RootStackScreens.settings);
+  const handleNavigateToSettings = (id: string) => {
+    navigation.navigate(RootStackScreens.settings, {id});
   };
 
   const handleAddBar = () => {
-    dispatch(addBar());
+    const defaultBarItem: IBar = {
+      id: uuidv4(),
+      title: locales.defaultBarTitle,
+      description: locales.defaultBarDescription,
+      current: 0,
+      total: 0,
+      type: 'asc',
+    };
+
+    dispatch(addBar(defaultBarItem));
   };
 
   const handleDeleteBar = (id: string) => {
@@ -48,27 +57,29 @@ const Main = () => {
         barStyle={'dark-content'}
       />
 
-      <View style={[styles.safeAreaContainer, {paddingTop: top}]}>
+      <View style={styles.safeAreaContainer}>
         {bars.length > 0 ? (
           <ScrollView
             style={styles.scrollContainer}
             ref={ref}
-            onContentSizeChange={() =>
-              ref.current?.scrollToEnd({animated: true})
-            }>
+            onContentSizeChange={() => {
+              ref.current?.scrollToEnd({animated: true});
+            }}>
             <View style={styles.container}>
               {bars.map((bar, index) => (
                 <Card
-                  key={index}
+                  key={bar.id}
+                  locales={locales}
                   barItem={{
+                    type: bar.type,
                     title: bar.title,
-                    desc: bar.description,
-                    total: 100,
-                    current: 50,
+                    description: bar.description,
+                    total: bar.total,
+                    current: bar.current,
                   }}
-                  deleteBar={() => handleDeleteBar(String(index))}
+                  deleteBar={() => handleDeleteBar(bar.id)}
                   isFirst={index === 0}
-                  navigateToSettings={handleNavigateToSettings}
+                  navigateToSettings={() => handleNavigateToSettings(bar.id)}
                 />
               ))}
               <TouchableOpacity style={styles.plusBtn} onPress={handleAddBar}>
@@ -81,9 +92,7 @@ const Main = () => {
             <TouchableOpacity onPress={handleAddBar}>
               <Plus color={colors.black} size={24} />
             </TouchableOpacity>
-            <Text style={[styles.text, {marginTop: 14}]}>
-              {locales.addBarText}
-            </Text>
+            <Text style={[styles.text, {marginTop: 14}]}>{locales.noBar}</Text>
           </View>
         )}
       </View>
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     backgroundColor: colors.backgroundPrimary,
   },
   scrollContainer: {

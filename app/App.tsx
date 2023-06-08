@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import {AppState} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 
 import Navigation from './navigation';
@@ -11,9 +10,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.current.match(/active/) && nextAppState === 'background') {
-      }
-
       appState.current = nextAppState;
       console.log('AppState', appState.current);
     });
@@ -26,9 +22,7 @@ const App: React.FC = () => {
   return (
     //Для android плохо работает когда status bar стоит prop translucent
     <Provider store={store}>
-      <SafeAreaProvider>
-        <Navigation />
-      </SafeAreaProvider>
+      <Navigation />
     </Provider>
   );
 };

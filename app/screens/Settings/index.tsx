@@ -1,12 +1,19 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
+import ColorPicker, {HueSlider, Panel1} from 'reanimated-color-picker';
 
 import {colors} from '../../styles';
 import Header from '../../components/Header';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {RootNavigationTypeRouteProp} from '../../navigation/types';
+import {useAppSelector} from '../../store/hooks';
 
 const Settings = () => {
-  const {top} = useSafeAreaInsets();
+  const {params} = useRoute<RootNavigationTypeRouteProp>();
+
+  const title = useAppSelector(state =>
+    state.bar.bars.find(bar => bar.id === params.id),
+  )?.title as string;
 
   return (
     <>
@@ -14,10 +21,20 @@ const Settings = () => {
         backgroundColor={colors.backgroundSecondary1}
         barStyle={'dark-content'}
       />
-      <View style={[styles.safeAreaContainer, {paddingTop: top}]}>
-        <Header title="Бар 1" />
+      <View style={styles.safeAreaContainer}>
+        <Header title={title} />
         <View style={styles.container}>
           <Text style={styles.text}>Settings</Text>
+          <ColorPicker
+            style={{width: '80%'}}
+            onComplete={e => {
+              console.log(e);
+            }}>
+            <View>
+              <Panel1 />
+              <HueSlider />
+            </View>
+          </ColorPicker>
         </View>
       </View>
     </>

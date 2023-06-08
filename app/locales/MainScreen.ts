@@ -1,3 +1,8 @@
 export const locales = {
-  addBarText: 'Ничего пока нет',
+  defaultBarTitle: 'Имя',
+  defaultBarDescription: 'Описание',
+  noBar: 'Ничего пока нет',
+  remainingTime: 'Истечёт через: ',
+  remainingTimeEmpty: 'Пусто',
+  remainingTimeFulL: 'Заполнено',
 } as const;

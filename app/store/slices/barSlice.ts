@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 
-import {IBarInitialState} from './types';
+import {IBar, IBarInitialState} from './types';
 
 const initialState: IBarInitialState = {
   bars: [],
@@ -11,16 +11,8 @@ export const barSlice = createSlice({
   name: 'bar',
   initialState,
   reducers: {
-    addBar: state => {
-      const length = state.bars.length;
-
-      state.bars.push({
-        id: String(length),
-        title: `Бар ${length}`,
-        description: 'Описание',
-        current: null,
-        total: null,
-      });
+    addBar: (state, action: PayloadAction<IBar>) => {
+      state.bars.push(action.payload);
     },
     deleteBar: (state, action: PayloadAction<string>) => {
       const deletedBar = state.bars.find(el => el.id === action.payload);
