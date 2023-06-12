@@ -1,15 +1,16 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 
-import {colors} from '../../styles';
+import {colors} from '../../styles/colors';
 
 type Props = {
   title: string;
+  color: string;
 };
 
-const OptionButton: React.FC<Props> = ({title}) => {
+const OptionButton: React.FC<Props> = ({title, color}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={[styles.container, {backgroundColor: color}]}>
       <Text style={styles.titleText}>{title}</Text>
     </TouchableOpacity>
   );
@@ -24,7 +25,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.backgroundSecondary2,
   },
   titleText: {
     fontFamily: 'Inter-Regular',

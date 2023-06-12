@@ -34,9 +34,26 @@ export const barSlice = createSlice({
       editedBar.title = action.payload.title;
       editedBar.description = action.payload.description;
     },
+    editColors: (
+      state,
+      action: PayloadAction<{id: String; barColor?: string; btnColor?: string}>,
+    ) => {
+      const editedBar = state.bars.find(
+        el => el.id === action.payload.id,
+      ) as IBar;
+
+      if (action.payload.barColor) {
+        editedBar.barColor = action.payload.barColor;
+      }
+
+      if (action.payload.btnColor) {
+        editedBar.btnColor = action.payload.btnColor;
+      }
+    },
   },
 });
 
-export const {addBar, deleteBar, editSettingsTitleAndDesc} = barSlice.actions;
+export const {addBar, deleteBar, editSettingsTitleAndDesc, editColors} =
+  barSlice.actions;
 
 export default barSlice.reducer;

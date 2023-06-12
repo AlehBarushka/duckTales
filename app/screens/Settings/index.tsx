@@ -9,26 +9,35 @@ import {
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
-// import ColorPicker, {HueSlider, Panel1} from 'reanimated-color-picker';
 
-import {colors} from '../../styles';
+import {colors} from '../../styles/colors';
 import Header from '../../components/Header';
 import {RootNavigationTypeRouteProp} from '../../navigation/types';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import Pencil from '../../assets/svg/Pencil';
 import {locales} from '../../locales/SettingsScreen';
 import Palette from '../../assets/svg/Palette';
-import {editSettingsTitleAndDesc} from '../../store/slices/barSlice';
+import {
+  editColors,
+  editSettingsTitleAndDesc,
+} from '../../store/slices/barSlice';
+import ColorPickerModal from '../../components/ColorPickerModal';
 
 const Settings = () => {
   const {params} = useRoute<RootNavigationTypeRouteProp>();
 
-  const {storeTitle, storeDescription} = useAppSelector(state => ({
-    storeTitle: state.bar.bars.find(bar => bar.id === params.id)
-      ?.title as string,
-    storeDescription: state.bar.bars.find(bar => bar.id === params.id)
-      ?.description as string,
-  }));
+  const {storeTitle, storeDescription, barColor, btnColor} = useAppSelector(
+    state => {
+      const currentBar = state.bar.bars.find(bar => bar.id === params.id);
+
+      return {
+        storeTitle: currentBar?.title as string,
+        storeDescription: currentBar?.description as string,
+        btnColor: currentBar?.btnColor as string,
+        barColor: currentBar?.barColor as string,
+      };
+    },
+  );
 
   const dispatch = useAppDispatch();
 
@@ -39,9 +48,10 @@ const Settings = () => {
     title: storeTitle,
     description: storeDescription,
   });
-
   const [editableTitleInput, setEditableTitleInput] = useState(false);
   const [editableDescInput, setEditableDescInput] = useState(false);
+  const [btnColorPickerVisible, setBtnColorPickerVisible] = useState(false);
+  const [barColorPickerVisible, setBarColorPickerVisible] = useState(false);
 
   const handleEditTitle = () => {
     setEditableTitleInput(true);
@@ -75,6 +85,36 @@ const Settings = () => {
         description: settings.description,
       }),
     );
+  };
+
+  const handlePickBarColor = () => {
+    setBarColorPickerVisible(true);
+  };
+
+  const handleCloseAndSaveBarColor = (color: string) => {
+    setBarColorPickerVisible(false);
+
+    dispatch(
+      editColors({
+        id: params.id,
+        barColor: color,
+      }),
+    );
+  };
+
+  const handleCloseAndSaveBtnColor = (color: string) => {
+    setBtnColorPickerVisible(false);
+
+    dispatch(
+      editColors({
+        id: params.id,
+        btnColor: color,
+      }),
+    );
+  };
+
+  const handlePickBtnColor = () => {
+    setBtnColorPickerVisible(true);
   };
 
   const handleOnChangeText = (type: string, text: string) => {
@@ -131,32 +171,44 @@ const Settings = () => {
             </View>
           </View>
           <View style={styles.rowSettingsItemContainer}>
-            <Text style={styles.text}>{locales.btnColor}</Text>
-            <TouchableOpacity>
-              <Palette color={colors.black} size={20} />
-            </TouchableOpacity>
+            <View style={styles.settingsItemContainer}>
+              <Text style={styles.text}>{locales.btnColor}</Text>
+            </View>
+            <View style={styles.settingsItemContainer}>
+              <TouchableOpacity
+                onPress={handlePickBtnColor}
+                style={styles.settingsItemIcon}>
+                <Palette color={colors.black} size={20} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.rowSettingsItemContainer}>
-            <Text style={styles.text}>{locales.barColor}</Text>
-            <TouchableOpacity>
-              <Palette color={colors.black} size={20} />
-            </TouchableOpacity>
+            <View style={styles.settingsItemContainer}>
+              <Text style={styles.text}>{locales.barColor}</Text>
+            </View>
+            <View style={styles.settingsItemContainer}>
+              <TouchableOpacity
+                onPress={handlePickBarColor}
+                style={styles.settingsItemIcon}>
+                <Palette color={colors.black} size={20} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.rowSettingsItemContainer}>
             <Text style={styles.text}>{locales.typeOfBar}</Text>
           </View>
-          {/* <ColorPicker
-            style={{width: '80%'}}
-            onComplete={e => {
-              console.log(e);
-            }}>
-            <View>
-              <Panel1 />
-              <HueSlider />
-            </View>
-          </ColorPicker> */}
         </ScrollView>
       </View>
+      <ColorPickerModal
+        currentColor={barColor}
+        visible={barColorPickerVisible}
+        closeModal={handleCloseAndSaveBarColor}
+      />
+      <ColorPickerModal
+        visible={btnColorPickerVisible}
+        currentColor={btnColor}
+        closeModal={handleCloseAndSaveBtnColor}
+      />
     </>
   );
 };

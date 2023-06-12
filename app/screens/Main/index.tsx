@@ -17,7 +17,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import {RootStackScreens} from '../../navigation/constants';
 import {RootNavigationType} from '../../navigation/types';
-import {colors} from '../../styles';
+import {colors} from '../../styles/colors';
 import Card from '../../components/Card';
 import Plus from '../../assets/svg/Plus';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
@@ -43,6 +43,8 @@ const Main = () => {
       id: uuidv4(),
       title: locales.defaultBarTitle,
       description: locales.defaultBarDescription,
+      barColor: '#D4D4D4',
+      btnColor: '#D4D4D4',
       current: 0,
       total: 0,
       type: 'asc',
@@ -89,6 +91,8 @@ const Main = () => {
                     isFirst={index === 0}
                     barItem={{
                       type: bar.type,
+                      barColor: bar.barColor,
+                      btnColor: bar.btnColor,
                       title: bar.title,
                       description: bar.description,
                       total: bar.total,

@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import Trash from '../../assets/svg/Trash';
-import {colors} from '../../styles';
+import {colors} from '../../styles/colors';
 import OptionButton from '../OptionButton';
 import GearWheel from '../../assets/svg/GearWheel';
 import {IBar} from '../../store/slices/types';
@@ -72,25 +72,21 @@ const Card: React.FC<Props> = ({
           height={40}
           width={null}
           color={colors.trash}
-          unfilledColor={colors.backgroundSecondary2}
+          unfilledColor={barItem.barColor}
         />
       </View>
 
       <View style={styles.optionsContainer}>
-        <OptionButton title="-10 %" />
-        <OptionButton title="-1 %" />
+        <OptionButton color={barItem.btnColor} title="-10 %" />
+        <OptionButton color={barItem.btnColor} title="-1 %" />
         <TouchableOpacity onPress={navigateToSettings}>
           <GearWheel size={26} color={colors.black} />
         </TouchableOpacity>
-        <OptionButton title="+1 %" />
-        <OptionButton title="+10 %" />
+        <OptionButton color={barItem.btnColor} title="+1 %" />
+        <OptionButton color={barItem.btnColor} title="+10 %" />
       </View>
       <View style={styles.progressStatusContainer}>
-        <Text
-          style={[
-            styles.progressStatusText,
-            {marginRight: 20},
-          ]}>{`${percentage}%`}</Text>
+        <Text style={styles.progressStatusText}>{`${percentage}%`}</Text>
         {percentage === 100 && (
           <Text style={styles.progressStatusText}>
             {locales.remainingTimeFulL}
@@ -161,5 +157,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     fontSize: 14,
     color: colors.black,
+    marginRight: 20,
   },
 });

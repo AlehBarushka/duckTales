@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 import {locales} from '../../locales/SettingsScreen';
-import {colors} from '../../styles';
+import {colors} from '../../styles/colors';
 
 type Props = {
   title: string;
