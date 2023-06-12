@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSecondary1,
     paddingVertical: 30,
     alignItems: 'center',
+    marginBottom: 40,
   },
   titleText: {
     color: colors.black,

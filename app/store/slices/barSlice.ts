@@ -4,7 +4,7 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 import {IBar, IBarInitialState} from './types';
 
 const initialState: IBarInitialState = {
-  bars: [],
+  bars: [] as IBar[],
 };
 
 export const barSlice = createSlice({
@@ -23,9 +23,20 @@ export const barSlice = createSlice({
         state.bars.splice(deletedIndex, 1);
       }
     },
+    editSettingsTitleAndDesc: (
+      state,
+      action: PayloadAction<{id: string; title: string; description: string}>,
+    ) => {
+      const editedBar = state.bars.find(
+        el => el.id === action.payload.id,
+      ) as IBar;
+
+      editedBar.title = action.payload.title;
+      editedBar.description = action.payload.description;
+    },
   },
 });
 
-export const {addBar, deleteBar} = barSlice.actions;
+export const {addBar, deleteBar, editSettingsTitleAndDesc} = barSlice.actions;
 
 export default barSlice.reducer;
