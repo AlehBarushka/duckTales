@@ -53,7 +53,7 @@ const Card: React.FC<Props> = ({
   return (
     <Animated.View
       entering={LightSpeedInLeft}
-      layout={Layout.overshootClamping(1)}
+      layout={Layout.duration(400)}
       exiting={LightSpeedOutLeft}
       style={[styles.container, isFirst && styles.firstContainer]}>
       <View style={styles.titleContainer}>
