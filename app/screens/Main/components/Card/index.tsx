@@ -7,12 +7,12 @@ import Animated, {
   LightSpeedOutLeft,
 } from 'react-native-reanimated';
 
-import Trash from '../../assets/svg/Trash';
-import {colors} from '../../styles/colors';
-import OptionButton from '../OptionButton';
-import GearWheel from '../../assets/svg/GearWheel';
-import {IBar} from '../../store/slices/types';
-import {locales as ILocales} from '../../locales/MainScreen';
+import Trash from '../../../../assets/svg/Trash';
+import {colors} from '../../../../styles/colors';
+import GearWheel from '../../../../assets/svg/GearWheel';
+import {IBar} from '../../../../store/slices/types';
+import {locales as ILocales} from '../../../../locales/MainScreen';
+import OptionButton from '../../../Settings/components/OptionButton';
 
 type Props = {
   barItem: Omit<IBar, 'id'>;
@@ -71,8 +71,8 @@ const Card: React.FC<Props> = ({
           progress={width}
           height={40}
           width={null}
-          color={colors.trash}
-          unfilledColor={barItem.barColor}
+          color={barItem.barColor}
+          unfilledColor={colors.backgroundSecondary2}
         />
       </View>
 

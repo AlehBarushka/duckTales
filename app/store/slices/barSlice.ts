@@ -36,7 +36,7 @@ export const barSlice = createSlice({
     },
     editColors: (
       state,
-      action: PayloadAction<{id: String; barColor?: string; btnColor?: string}>,
+      action: PayloadAction<{id: string; barColor?: string; btnColor?: string}>,
     ) => {
       const editedBar = state.bars.find(
         el => el.id === action.payload.id,
@@ -50,10 +50,25 @@ export const barSlice = createSlice({
         editedBar.btnColor = action.payload.btnColor;
       }
     },
+    changeBarType: (
+      state,
+      action: PayloadAction<{id: string; type: 'desc' | 'asc'}>,
+    ) => {
+      const editedBar = state.bars.find(
+        el => el.id === action.payload.id,
+      ) as IBar;
+
+      editedBar.type = action.payload.type;
+    },
   },
 });
 
-export const {addBar, deleteBar, editSettingsTitleAndDesc, editColors} =
-  barSlice.actions;
+export const {
+  addBar,
+  deleteBar,
+  editSettingsTitleAndDesc,
+  editColors,
+  changeBarType,
+} = barSlice.actions;
 
 export default barSlice.reducer;

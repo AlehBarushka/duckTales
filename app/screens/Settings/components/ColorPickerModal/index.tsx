@@ -1,8 +1,7 @@
 import {Modal, Pressable, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import ColorPicker, {OpacitySlider, Panel3} from 'reanimated-color-picker';
-
-import {colors} from '../../styles/colors';
+import {colors} from '../../../../styles/colors';
 
 type Props = {
   visible: boolean;

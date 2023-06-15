@@ -18,7 +18,7 @@ import {v4 as uuidv4} from 'uuid';
 import {RootStackScreens} from '../../navigation/constants';
 import {RootNavigationType} from '../../navigation/types';
 import {colors} from '../../styles/colors';
-import Card from '../../components/Card';
+import Card from './components/Card';
 import Plus from '../../assets/svg/Plus';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {addBar, deleteBar} from '../../store/slices/barSlice';
@@ -45,8 +45,8 @@ const Main = () => {
       description: locales.defaultBarDescription,
       barColor: '#D4D4D4',
       btnColor: '#D4D4D4',
-      current: 0,
-      total: 0,
+      current: 40,
+      total: 100,
       type: 'asc',
     };
 
