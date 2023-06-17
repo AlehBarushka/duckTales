@@ -1,16 +1,6 @@
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-} from 'react-native';
+import {StatusBar, StyleSheet, TextInput, View, ScrollView} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import React, {useMemo, useRef, useState} from 'react';
-import RadioButtonsGroup, {
-  RadioButtonProps,
-} from 'react-native-radio-buttons-group';
+import React, {useRef, useState} from 'react';
 
 import {colors} from '../../styles/colors';
 import {RootNavigationTypeRouteProp} from '../../navigation/types';
@@ -24,11 +14,12 @@ import {
 import Header from './components/Header';
 import TitleDescInput from './components/TitleDescInput';
 import ColorPicker from './components/ColorPicker';
+import RadioInputGroup from './components/RadioInputGroup';
 
 const Settings = () => {
   const {params} = useRoute<RootNavigationTypeRouteProp>();
 
-  const {storeTitle, storeDescription, barColor, btnColor, type} =
+  const {storeTitle, storeDescription, barColor, btnColor, type, value} =
     useAppSelector(state => {
       const currentBar = state.bar.bars.find(bar => bar.id === params.id);
 
@@ -38,6 +29,7 @@ const Settings = () => {
         btnColor: currentBar?.btnColor as string,
         barColor: currentBar?.barColor as string,
         type: currentBar?.type,
+        value: currentBar?.total,
       };
     });
 
@@ -54,35 +46,6 @@ const Settings = () => {
   const [editableDescInput, setEditableDescInput] = useState(false);
   const [btnColorPickerVisible, setBtnColorPickerVisible] = useState(false);
   const [barColorPickerVisible, setBarColorPickerVisible] = useState(false);
-
-  const radioButtons: RadioButtonProps[] = useMemo(
-    () => [
-      {
-        id: 'desc',
-        label: 'Убывающий',
-        color: colors.black,
-        labelStyle: {
-          fontFamily: 'Inter-Regular',
-          fontSize: 16,
-          color: colors.black,
-        },
-        containerStyle: {marginBottom: 50},
-        value: 'desc',
-      },
-      {
-        id: 'asc',
-        label: 'Возрастающий',
-        color: colors.black,
-        labelStyle: {
-          fontFamily: 'Inter-Regular',
-          fontSize: 16,
-          color: colors.black,
-        },
-        value: 'asc',
-      },
-    ],
-    [],
-  );
 
   const changeType = (type: string) => {
     dispatch(changeBarType({id: params.id, type: type as 'desc' | 'asc'}));
@@ -189,89 +152,13 @@ const Settings = () => {
             onPress={handlePickBarColor}
             text={locales.barColor}
           />
-          <View style={styles.rowSettingsItemContainer}>
-            <Text style={styles.text}>{locales.typeOfBar}</Text>
-          </View>
-          <View>
-            <RadioButtonsGroup
-              containerStyle={{alignItems: 'flex-start'}}
-              layout="column"
-              radioButtons={radioButtons}
-              onPress={changeType}
-              selectedId={type}
-            />
-            <View
-              style={{
-                flex: 1,
-                position: 'absolute',
-                top: 34,
-                paddingLeft: 44,
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1,
-              }}>
-              <TextInput
-                editable={type === 'desc'}
-                maxLength={5}
-                keyboardType="numeric"
-                style={{
-                  flex: 1,
-                  backgroundColor: colors.settingsInput,
-                  height: 30,
-                  paddingVertical: 0,
-                  paddingHorizontal: 10,
-                  fontFamily: 'Inter-Regular',
-                  fontSize: 14,
-                  color: colors.black,
-                }}
-              />
-              <Text
-                style={{
-                  flex: 1,
-                  marginLeft: 20,
-                  fontFamily: 'Inter-Regular',
-                  fontSize: 14,
-                  color: colors.black,
-                }}>
-                {locales.percentageInHour}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flex: 1,
-                borderWidth: 1,
-              }}>
-              <TextInput
-                maxLength={5}
-                editable={type === 'asc'}
-                keyboardType="numeric"
-                style={{
-                  flex: 1,
-                  backgroundColor: colors.settingsInput,
-                  marginLeft: 44,
-                  height: 30,
-                  paddingVertical: 0,
-                  paddingHorizontal: 10,
-                  fontFamily: 'Inter-Regular',
-                  fontSize: 14,
-                  color: colors.black,
-                }}
-              />
-              <Text
-                style={{
-                  flex: 1,
-                  marginLeft: 20,
-                  fontFamily: 'Inter-Regular',
-                  fontSize: 14,
-                  color: colors.black,
-                }}>
-                {locales.percentageInHour}
-              </Text>
-            </View>
-          </View>
+          <RadioInputGroup
+            changeType={changeType}
+            title={locales.typeOfBar}
+            type={type as 'desc' | 'asc'}
+            value={value}
+            inputText={locales.percentageInHour}
+          />
         </ScrollView>
       </View>
     </>
@@ -288,22 +175,5 @@ const styles = StyleSheet.create({
   settingsContainer: {
     flex: 1,
     paddingHorizontal: 26,
-  },
-  rowSettingsItemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  settingsItemContainer: {
-    flex: 1,
-  },
-  settingsItemIcon: {
-    marginLeft: 20,
-    alignSelf: 'flex-start',
-  },
-  text: {
-    fontFamily: 'Inter-Regular',
-    fontSize: 16,
-    color: colors.black,
   },
 });
