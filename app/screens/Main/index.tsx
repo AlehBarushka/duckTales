@@ -45,8 +45,8 @@ const Main = () => {
       description: locales.defaultBarDescription,
       barColor: '#D4D4D4',
       btnColor: '#D4D4D4',
-      current: 40,
-      total: 100,
+      current: 0,
+      total: 0,
       type: 'asc',
     };
 

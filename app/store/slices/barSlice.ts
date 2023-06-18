@@ -59,6 +59,18 @@ export const barSlice = createSlice({
       ) as IBar;
 
       editedBar.type = action.payload.type;
+      editedBar.total = 0;
+      editedBar.current = 0;
+    },
+    changeTotal: (
+      state,
+      action: PayloadAction<{id: string; value: number}>,
+    ) => {
+      const editedBar = state.bars.find(
+        el => el.id === action.payload.id,
+      ) as IBar;
+
+      editedBar.total = action.payload.value;
     },
   },
 });
@@ -68,6 +80,7 @@ export const {
   deleteBar,
   editSettingsTitleAndDesc,
   editColors,
+  changeTotal,
   changeBarType,
 } = barSlice.actions;
 

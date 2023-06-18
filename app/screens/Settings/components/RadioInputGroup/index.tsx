@@ -1,10 +1,11 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import RadioButtonsGroup, {
   RadioButtonProps,
 } from 'react-native-radio-buttons-group';
 
 import {colors} from '../../../../styles/colors';
+import {isPercentage} from './helpers/isPercentage';
 
 type Props = {
   title: string;
@@ -12,6 +13,7 @@ type Props = {
   value?: number;
   inputText: string;
   changeType: (type: string) => void;
+  onBlur: (value: string) => void;
 };
 
 const RadioInputGroup: React.FC<Props> = ({
@@ -20,8 +22,26 @@ const RadioInputGroup: React.FC<Props> = ({
   value,
   inputText,
   changeType,
+  onBlur,
 }) => {
-  const [inputValue, setInputValue] = useState(String(value));
+  const [ascInputValue, setAscInputValue] = useState(
+    type === 'asc' ? String(value) : '',
+  );
+  const [descInputValue, setDescInputValue] = useState(
+    type === 'desc' ? String(value) : '',
+  );
+
+  const handleChangeAscPercentage = (percentage: string) => {
+    if (isPercentage(percentage)) {
+      return setAscInputValue(percentage);
+    }
+  };
+
+  const handleChangeDescPercentage = (percentage: string) => {
+    if (isPercentage(percentage)) {
+      return setDescInputValue(percentage);
+    }
+  };
 
   const radioButtons: RadioButtonProps[] = useMemo(
     () => [
@@ -54,6 +74,16 @@ const RadioInputGroup: React.FC<Props> = ({
     [],
   );
 
+  useEffect(() => {
+    if (type === 'asc') {
+      setDescInputValue('');
+    }
+
+    if (type === 'desc') {
+      setAscInputValue('');
+    }
+  }, [type]);
+
   return (
     <>
       <View style={styles.rowItemContainer}>
@@ -69,7 +99,9 @@ const RadioInputGroup: React.FC<Props> = ({
         />
         <View style={styles.firstInputContainer}>
           <TextInput
-            value={type === 'asc' ? inputValue : undefined}
+            value={descInputValue}
+            onBlur={() => onBlur(descInputValue)}
+            onChangeText={handleChangeDescPercentage}
             editable={type === 'desc'}
             keyboardType="numeric"
             style={styles.input}
@@ -79,8 +111,9 @@ const RadioInputGroup: React.FC<Props> = ({
 
         <View style={styles.secondInputContainer}>
           <TextInput
-            value={type === 'asc' ? inputValue : undefined}
-            maxLength={3}
+            value={ascInputValue}
+            onBlur={() => onBlur(ascInputValue)}
+            onChangeText={handleChangeAscPercentage}
             editable={type === 'asc'}
             keyboardType="numeric"
             style={[styles.input, {marginLeft: 44}]}

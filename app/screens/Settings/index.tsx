@@ -8,6 +8,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {locales} from '../../locales/SettingsScreen';
 import {
   changeBarType,
+  changeTotal,
   editColors,
   editSettingsTitleAndDesc,
 } from '../../store/slices/barSlice';
@@ -30,6 +31,7 @@ const Settings = () => {
         barColor: currentBar?.barColor as string,
         type: currentBar?.type,
         value: currentBar?.total,
+        current: currentBar?.current,
       };
     });
 
@@ -111,6 +113,10 @@ const Settings = () => {
     setSettings({...settings, [typeText]: text});
   };
 
+  const handleSavePercentage = (percentage: string) => {
+    dispatch(changeTotal({id: params.id, value: Number(percentage)}));
+  };
+
   return (
     <>
       <StatusBar
@@ -157,6 +163,7 @@ const Settings = () => {
             title={locales.typeOfBar}
             type={type as 'desc' | 'asc'}
             value={value}
+            onBlur={handleSavePercentage}
             inputText={locales.percentageInHour}
           />
         </ScrollView>
