@@ -8,7 +8,7 @@ export type IBar = {
   description: string;
   barColor: string;
   btnColor: string;
-  total: number;
-  current: number;
+  startTime: number;
+  endTime: number;
   type: 'asc' | 'desc';
 };

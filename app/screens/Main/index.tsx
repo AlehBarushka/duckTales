@@ -4,8 +4,9 @@ import {
   TouchableOpacity,
   View,
   Text,
+  RefreshControl,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import 'react-native-get-random-values';
 import Animated, {
@@ -27,6 +28,8 @@ import {IBar} from '../../store/slices/types';
 import {SCROLLVIEW_ANIMATION_PADDING} from './constants';
 
 const Main = () => {
+  const [refreshing, setRefreshing] = useState(false);
+
   const navigation = useNavigation<RootNavigationType>();
 
   const dispatch = useAppDispatch();
@@ -45,8 +48,8 @@ const Main = () => {
       description: locales.defaultBarDescription,
       barColor: '#D4D4D4',
       btnColor: '#D4D4D4',
-      current: 0,
-      total: 0,
+      startTime: new Date().getTime(),
+      endTime: new Date().getTime(),
       type: 'asc',
     };
 
@@ -72,6 +75,16 @@ const Main = () => {
     };
   });
 
+  // useEffect(() => {
+  //   const intervalID = setInterval(() => {
+  //     setRefreshing(!refreshing);
+  //   }, 5000);
+
+  //   return () => {
+  //     clearInterval(intervalID);
+  //   };
+  // }, [refreshing]);
+
   return (
     <>
       <StatusBar
@@ -82,7 +95,14 @@ const Main = () => {
       <View style={styles.listContainer}>
         {bars.length > 0 ? (
           <>
-            <Animated.ScrollView onScroll={scrollHandler}>
+            <Animated.ScrollView
+              onScroll={scrollHandler}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => setRefreshing(!refreshing)}
+                />
+              }>
               <Animated.View style={scrollViewAnimated}>
                 {bars.map((bar, index) => (
                   <Card
@@ -95,8 +115,8 @@ const Main = () => {
                       btnColor: bar.btnColor,
                       title: bar.title,
                       description: bar.description,
-                      total: bar.total,
-                      current: bar.current,
+                      startTime: bar.startTime,
+                      endTime: bar.endTime,
                     }}
                     deleteBar={() => handleDeleteBar(bar.id)}
                     navigateToSettings={() => handleNavigateToSettings(bar.id)}

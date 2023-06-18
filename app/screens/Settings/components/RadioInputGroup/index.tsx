@@ -10,7 +10,7 @@ import {isPercentage} from './helpers/isPercentage';
 type Props = {
   title: string;
   type: 'desc' | 'asc';
-  value?: number;
+  value: number;
   inputText: string;
   changeType: (type: string) => void;
   onBlur: (value: string) => void;
@@ -24,11 +24,17 @@ const RadioInputGroup: React.FC<Props> = ({
   changeType,
   onBlur,
 }) => {
+  let val = value;
+
+  if (!isFinite(value)) {
+    val = 0;
+  }
+
   const [ascInputValue, setAscInputValue] = useState(
-    type === 'asc' ? String(value) : '',
+    type === 'asc' ? String(val) : '',
   );
   const [descInputValue, setDescInputValue] = useState(
-    type === 'desc' ? String(value) : '',
+    type === 'desc' ? String(val) : '',
   );
 
   const handleChangeAscPercentage = (percentage: string) => {

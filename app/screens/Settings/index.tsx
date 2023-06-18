@@ -16,6 +16,7 @@ import Header from './components/Header';
 import TitleDescInput from './components/TitleDescInput';
 import ColorPicker from './components/ColorPicker';
 import RadioInputGroup from './components/RadioInputGroup';
+import {MILLISECONDS_IN_HOUR} from '../../store/constants';
 
 const Settings = () => {
   const {params} = useRoute<RootNavigationTypeRouteProp>();
@@ -23,6 +24,8 @@ const Settings = () => {
   const {storeTitle, storeDescription, barColor, btnColor, type, value} =
     useAppSelector(state => {
       const currentBar = state.bar.bars.find(bar => bar.id === params.id);
+      const startTime = currentBar?.startTime as number;
+      const endTime = currentBar?.endTime as number;
 
       return {
         storeTitle: currentBar?.title as string,
@@ -30,8 +33,7 @@ const Settings = () => {
         btnColor: currentBar?.btnColor as string,
         barColor: currentBar?.barColor as string,
         type: currentBar?.type,
-        value: currentBar?.total,
-        current: currentBar?.current,
+        value: (1 / ((endTime - startTime) / MILLISECONDS_IN_HOUR)) * 100,
       };
     });
 

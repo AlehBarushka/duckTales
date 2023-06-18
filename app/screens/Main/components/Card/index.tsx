@@ -13,6 +13,8 @@ import GearWheel from '../../../../assets/svg/GearWheel';
 import {IBar} from '../../../../store/slices/types';
 import {locales as ILocales} from '../../../../locales/MainScreen';
 import OptionButton from '../../../Settings/components/OptionButton';
+import {MILLISECONDS_IN_HOUR} from '../../../../store/constants';
+import {getRemainingTime} from './helpers/getRemainingTime';
 
 type Props = {
   barItem: Omit<IBar, 'id'>;
@@ -30,11 +32,19 @@ const Card: React.FC<Props> = ({
   navigateToSettings,
 }) => {
   let width;
-  let total = barItem.total;
-  let current = barItem.current;
-  let percentage = barItem.current;
+  let total = barItem.endTime - barItem.startTime;
+  let current;
+  let percentage = 0;
+  let remainingTime =
+    (barItem.endTime - new Date().getTime()) / MILLISECONDS_IN_HOUR;
 
-  if (barItem.total === 0) {
+  if (barItem.startTime - barItem.endTime === 0) {
+    current = 0;
+  } else {
+    current = new Date().getTime() - barItem.startTime;
+  }
+
+  if (barItem.startTime - barItem.endTime === 0) {
     total = 1;
   }
 
@@ -49,6 +59,18 @@ const Card: React.FC<Props> = ({
   } else {
     width = (total - current) / total;
   }
+
+  // чтобы ширина не увеличивались больше 1
+  if (width > 1) {
+    width = 1;
+  }
+
+  // чтобы проценты не увеличивались больше 100
+  if (percentage > 100) {
+    percentage = 100;
+  }
+
+  console.log(width);
 
   return (
     <Animated.View
@@ -86,8 +108,10 @@ const Card: React.FC<Props> = ({
         <OptionButton color={barItem.btnColor} title="+10 %" />
       </View>
       <View style={styles.progressStatusContainer}>
-        <Text style={styles.progressStatusText}>{`${percentage}%`}</Text>
-        {percentage === 100 && (
+        <Text style={styles.progressStatusText}>{`${percentage.toFixed(
+          2,
+        )}%`}</Text>
+        {percentage >= 100 && (
           <Text style={styles.progressStatusText}>
             {locales.remainingTimeFulL}
           </Text>
@@ -99,7 +123,7 @@ const Card: React.FC<Props> = ({
         )}
         {percentage > 0 && percentage < 100 && (
           <Text style={styles.progressStatusText}>
-            {locales.remainingTime}Время
+            {locales.remainingTime} {getRemainingTime(remainingTime)}
           </Text>
         )}
       </View>

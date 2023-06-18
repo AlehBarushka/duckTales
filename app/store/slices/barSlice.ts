@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 
 import {IBar, IBarInitialState} from './types';
+import {MILLISECONDS_IN_HOUR} from '../constants';
 
 const initialState: IBarInitialState = {
   bars: [] as IBar[],
@@ -59,8 +60,8 @@ export const barSlice = createSlice({
       ) as IBar;
 
       editedBar.type = action.payload.type;
-      editedBar.total = 0;
-      editedBar.current = 0;
+      editedBar.startTime = new Date().getTime();
+      editedBar.endTime = new Date().getTime();
     },
     changeTotal: (
       state,
@@ -70,7 +71,14 @@ export const barSlice = createSlice({
         el => el.id === action.payload.id,
       ) as IBar;
 
-      editedBar.total = action.payload.value;
+      const startTime = new Date().getTime();
+
+      const hoursToTheEnd = 1 / (action.payload.value / 100);
+
+      const endTime = startTime + hoursToTheEnd * MILLISECONDS_IN_HOUR;
+
+      editedBar.startTime = startTime;
+      editedBar.endTime = endTime;
     },
   },
 });
