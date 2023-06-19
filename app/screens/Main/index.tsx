@@ -75,16 +75,6 @@ const Main = () => {
     };
   });
 
-  // useEffect(() => {
-  //   const intervalID = setInterval(() => {
-  //     setRefreshing(!refreshing);
-  //   }, 5000);
-
-  //   return () => {
-  //     clearInterval(intervalID);
-  //   };
-  // }, [refreshing]);
-
   return (
     <>
       <StatusBar

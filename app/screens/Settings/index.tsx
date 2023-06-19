@@ -116,6 +116,9 @@ const Settings = () => {
   };
 
   const handleSavePercentage = (percentage: string) => {
+    if (!percentage) {
+      return;
+    }
     dispatch(changeTotal({id: params.id, value: Number(percentage)}));
   };
 

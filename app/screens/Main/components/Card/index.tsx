@@ -70,8 +70,6 @@ const Card: React.FC<Props> = ({
     percentage = 100;
   }
 
-  console.log(width);
-
   return (
     <Animated.View
       entering={LightSpeedInLeft}
