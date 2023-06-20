@@ -80,6 +80,20 @@ export const barSlice = createSlice({
       editedBar.startTime = startTime;
       editedBar.endTime = endTime;
     },
+    // updateStartTime: (
+    //   state,
+    //   action: PayloadAction<{id: string; value: number}>,
+    // ) => {
+    //   const editedBar = state.bars.find(
+    //     el => el.id === action.payload.id,
+    //   ) as IBar;
+
+    //   const total = editedBar.endTime - editedBar.startTime;
+
+    //   const diffValue = (total * action.payload.value) / 100;
+
+    //   editedBar.startTime = editedBar.startTime + diffValue;
+    // },
   },
 });
 
@@ -90,6 +104,7 @@ export const {
   editColors,
   changeTotal,
   changeBarType,
+  updateStartTime,
 } = barSlice.actions;
 
 export default barSlice.reducer;

@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import 'react-native-get-random-values';
 import Animated, {
   useAnimatedScrollHandler,
@@ -22,7 +22,7 @@ import {colors} from '../../styles/colors';
 import Card from './components/Card';
 import Plus from '../../assets/svg/Plus';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {addBar, deleteBar} from '../../store/slices/barSlice';
+import {addBar, deleteBar, updateStartTime} from '../../store/slices/barSlice';
 import {locales} from '../../locales/MainScreen';
 import {IBar} from '../../store/slices/types';
 import {SCROLLVIEW_ANIMATION_PADDING} from './constants';
@@ -75,6 +75,15 @@ const Main = () => {
     };
   });
 
+  // обновление баров, когда переходим просто из одного экрана в другой
+  useFocusEffect(() => {
+    setRefreshing(true);
+  });
+
+  // const updateTotal = (id: string, value: number) => {
+  //   dispatch(updateStartTime({id, value}));
+  // };
+
   return (
     <>
       <StatusBar
@@ -100,6 +109,7 @@ const Main = () => {
                     locales={locales}
                     isFirst={index === 0}
                     barItem={{
+                      id: bar.id,
                       type: bar.type,
                       barColor: bar.barColor,
                       btnColor: bar.btnColor,
@@ -108,6 +118,7 @@ const Main = () => {
                       startTime: bar.startTime,
                       endTime: bar.endTime,
                     }}
+                    updateTotal={updateTotal}
                     deleteBar={() => handleDeleteBar(bar.id)}
                     navigateToSettings={() => handleNavigateToSettings(bar.id)}
                   />
