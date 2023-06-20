@@ -22,7 +22,7 @@ import {colors} from '../../styles/colors';
 import Card from './components/Card';
 import Plus from '../../assets/svg/Plus';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {addBar, deleteBar, updateStartTime} from '../../store/slices/barSlice';
+import {addBar, deleteBar} from '../../store/slices/barSlice';
 import {locales} from '../../locales/MainScreen';
 import {IBar} from '../../store/slices/types';
 import {SCROLLVIEW_ANIMATION_PADDING} from './constants';
@@ -76,13 +76,10 @@ const Main = () => {
   });
 
   // обновление баров, когда переходим просто из одного экрана в другой
+  // TODO: нужно переделать
   useFocusEffect(() => {
     setRefreshing(true);
   });
-
-  // const updateTotal = (id: string, value: number) => {
-  //   dispatch(updateStartTime({id, value}));
-  // };
 
   return (
     <>
@@ -109,7 +106,6 @@ const Main = () => {
                     locales={locales}
                     isFirst={index === 0}
                     barItem={{
-                      id: bar.id,
                       type: bar.type,
                       barColor: bar.barColor,
                       btnColor: bar.btnColor,
@@ -118,7 +114,6 @@ const Main = () => {
                       startTime: bar.startTime,
                       endTime: bar.endTime,
                     }}
-                    updateTotal={updateTotal}
                     deleteBar={() => handleDeleteBar(bar.id)}
                     navigateToSettings={() => handleNavigateToSettings(bar.id)}
                   />
