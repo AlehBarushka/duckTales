@@ -5,7 +5,7 @@ import RadioButtonsGroup, {
 } from 'react-native-radio-buttons-group';
 
 import {colors} from '../../../../styles/colors';
-import {isPercentage} from './helpers/isPercentage';
+import {isValidPercentage} from './helpers/isValidPercentage';
 
 type Props = {
   title: string;
@@ -38,13 +38,13 @@ const RadioInputGroup: React.FC<Props> = ({
   );
 
   const handleChangeAscPercentage = (percentage: string) => {
-    if (isPercentage(percentage)) {
+    if (isValidPercentage(percentage)) {
       return setAscInputValue(percentage);
     }
   };
 
   const handleChangeDescPercentage = (percentage: string) => {
-    if (isPercentage(percentage)) {
+    if (isValidPercentage(percentage)) {
       return setDescInputValue(percentage);
     }
   };
@@ -106,6 +106,7 @@ const RadioInputGroup: React.FC<Props> = ({
         <View style={styles.firstInputContainer}>
           <TextInput
             value={descInputValue}
+            maxLength={5}
             onBlur={() => onBlur(descInputValue)}
             onChangeText={handleChangeDescPercentage}
             editable={type === 'desc'}
@@ -118,6 +119,7 @@ const RadioInputGroup: React.FC<Props> = ({
         <View style={styles.secondInputContainer}>
           <TextInput
             value={ascInputValue}
+            maxLength={5}
             onBlur={() => onBlur(ascInputValue)}
             onChangeText={handleChangeAscPercentage}
             editable={type === 'asc'}

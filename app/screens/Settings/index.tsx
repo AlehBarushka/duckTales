@@ -33,7 +33,10 @@ const Settings = () => {
         btnColor: currentBar?.btnColor as string,
         barColor: currentBar?.barColor as string,
         type: currentBar?.type,
-        value: (1 / ((endTime - startTime) / MILLISECONDS_IN_HOUR)) * 100,
+        value: (
+          (1 / ((endTime - startTime) / MILLISECONDS_IN_HOUR)) *
+          100
+        ).toFixed(0),
       };
     });
 
@@ -167,7 +170,7 @@ const Settings = () => {
             changeType={changeType}
             title={locales.typeOfBar}
             type={type as 'desc' | 'asc'}
-            value={value}
+            value={Number(value)}
             onBlur={handleSavePercentage}
             inputText={locales.percentageInHour}
           />
