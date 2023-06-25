@@ -35,8 +35,6 @@ const Card: React.FC<Props> = ({
 }) => {
   const {percentage, remainingTime, width} = useCardsValues(barItem);
 
-  console.log('render');
-
   return (
     <Animated.View
       entering={LightSpeedInLeft}
