@@ -14,6 +14,7 @@ const RootStackNavigator = () => {
       initialRouteName={INITIAL_SCREEN}
       screenOptions={{
         headerShown: false,
+        animation: 'fade_from_bottom',
       }}>
       <RootStack.Screen name={RootStackScreens.main} component={Main} />
       <RootStack.Screen name={RootStackScreens.settings} component={Settings} />
