@@ -5,11 +5,14 @@ import {colors} from '../../../../styles/colors';
 type Props = {
   title: string;
   color: string;
+  onPress: () => void;
 };
 
-const OptionButton: React.FC<Props> = ({title, color}) => {
+const OptionButton: React.FC<Props> = ({title, color, onPress}) => {
   return (
-    <TouchableOpacity style={[styles.container, {backgroundColor: color}]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.container, {backgroundColor: color}]}>
       <Text style={styles.titleText}>{title}</Text>
     </TouchableOpacity>
   );

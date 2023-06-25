@@ -10,5 +10,6 @@ export type IBar = {
   btnColor: string;
   startTime: number;
   endTime: number;
+  currentUpdate: number;
   type: 'asc' | 'desc';
 };

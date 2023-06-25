@@ -17,10 +17,11 @@ import {getRemainingTime} from './helpers/getRemainingTime';
 import {useCardsValues} from './hooks/useCardsValues';
 
 type Props = {
-  barItem: Omit<IBar, 'id'>;
+  barItem: IBar;
   locales: typeof ILocales;
   isFirst?: boolean;
   navigateToSettings: () => void;
+  setCurrentUpdate: (id: string, value: number) => void;
   deleteBar: () => void;
 };
 
@@ -30,8 +31,11 @@ const Card: React.FC<Props> = ({
   locales,
   deleteBar,
   navigateToSettings,
+  setCurrentUpdate,
 }) => {
   const {percentage, remainingTime, width} = useCardsValues(barItem);
+
+  console.log('render');
 
   return (
     <Animated.View
@@ -60,13 +64,29 @@ const Card: React.FC<Props> = ({
       </View>
 
       <View style={styles.optionsContainer}>
-        <OptionButton color={barItem.btnColor} title="-10 %" />
-        <OptionButton color={barItem.btnColor} title="-1 %" />
+        <OptionButton
+          color={barItem.btnColor}
+          title="-10 %"
+          onPress={() => setCurrentUpdate(barItem.id, -10)}
+        />
+        <OptionButton
+          color={barItem.btnColor}
+          title="-1 %"
+          onPress={() => setCurrentUpdate(barItem.id, -1)}
+        />
         <TouchableOpacity onPress={navigateToSettings}>
           <GearWheel size={26} color={colors.black} />
         </TouchableOpacity>
-        <OptionButton color={barItem.btnColor} title="+1 %" />
-        <OptionButton color={barItem.btnColor} title="+10 %" />
+        <OptionButton
+          color={barItem.btnColor}
+          title="+1 %"
+          onPress={() => setCurrentUpdate(barItem.id, 1)}
+        />
+        <OptionButton
+          color={barItem.btnColor}
+          title="+10 %"
+          onPress={() => setCurrentUpdate(barItem.id, 10)}
+        />
       </View>
       <View style={styles.progressStatusContainer}>
         <Text style={styles.progressStatusText}>{`${percentage.toFixed(

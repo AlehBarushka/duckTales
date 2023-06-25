@@ -12,8 +12,13 @@ export const barSlice = createSlice({
   name: 'bar',
   initialState,
   reducers: {
-    addBar: (state, action: PayloadAction<IBar>) => {
-      state.bars.push(action.payload);
+    addBar: (state, action: PayloadAction<Omit<IBar, 'currentUpdate'>>) => {
+      const bar = {
+        ...action.payload,
+        currentUpdate: 0,
+      };
+
+      state.bars.push(bar);
     },
     deleteBar: (state, action: PayloadAction<string>) => {
       const deletedBar = state.bars.find(el => el.id === action.payload);
@@ -62,6 +67,7 @@ export const barSlice = createSlice({
       editedBar.type = action.payload.type;
       editedBar.startTime = new Date().getTime();
       editedBar.endTime = new Date().getTime();
+      editedBar.currentUpdate = 0;
     },
     changeTotal: (
       state,
@@ -79,21 +85,18 @@ export const barSlice = createSlice({
 
       editedBar.startTime = startTime;
       editedBar.endTime = endTime;
+      editedBar.currentUpdate = 0;
     },
-    // updateStartTime: (
-    //   state,
-    //   action: PayloadAction<{id: string; value: number}>,
-    // ) => {
-    //   const editedBar = state.bars.find(
-    //     el => el.id === action.payload.id,
-    //   ) as IBar;
+    setCurrentUpdate: (
+      state,
+      action: PayloadAction<{id: string; value: number}>,
+    ) => {
+      const editedBar = state.bars.find(
+        el => el.id === action.payload.id,
+      ) as IBar;
 
-    //   const total = editedBar.endTime - editedBar.startTime;
-
-    //   const diffValue = (total * action.payload.value) / 100;
-
-    //   editedBar.startTime = editedBar.startTime + diffValue;
-    // },
+      editedBar.currentUpdate += action.payload.value;
+    },
   },
 });
 
@@ -104,7 +107,7 @@ export const {
   editColors,
   changeTotal,
   changeBarType,
-  updateStartTime,
+  setCurrentUpdate,
 } = barSlice.actions;
 
 export default barSlice.reducer;
