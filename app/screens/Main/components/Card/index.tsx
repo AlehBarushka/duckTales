@@ -13,8 +13,8 @@ import GearWheel from '../../../../assets/svg/GearWheel';
 import {IBar} from '../../../../store/slices/types';
 import {locales as ILocales} from '../../../../locales/MainScreen';
 import OptionButton from '../../../Settings/components/OptionButton';
-import {MILLISECONDS_IN_HOUR} from '../../../../store/constants';
 import {getRemainingTime} from './helpers/getRemainingTime';
+import {useCardsValues} from './hooks/useCardsValues';
 
 type Props = {
   barItem: Omit<IBar, 'id'>;
@@ -31,44 +31,7 @@ const Card: React.FC<Props> = ({
   deleteBar,
   navigateToSettings,
 }) => {
-  let width;
-  let total = barItem.endTime - barItem.startTime;
-  let current;
-  let percentage = 0;
-  let remainingTime =
-    (barItem.endTime - new Date().getTime()) / MILLISECONDS_IN_HOUR;
-
-  if (barItem.startTime - barItem.endTime === 0) {
-    current = 0;
-  } else {
-    current = new Date().getTime() - barItem.startTime;
-  }
-
-  if (barItem.startTime - barItem.endTime === 0) {
-    total = 1;
-  }
-
-  if (barItem.type === 'asc') {
-    percentage = (1 - (total - current) / total) * 100;
-  } else {
-    percentage = ((total - current) / total) * 100;
-  }
-
-  if (barItem.type === 'asc') {
-    width = 1 - (total - current) / total;
-  } else {
-    width = (total - current) / total;
-  }
-
-  // чтобы ширина не увеличивались больше 1
-  if (width > 1) {
-    width = 1;
-  }
-
-  // чтобы проценты не увеличивались больше 100
-  if (percentage > 100) {
-    percentage = 100;
-  }
+  const {percentage, remainingTime, width} = useCardsValues(barItem);
 
   return (
     <Animated.View

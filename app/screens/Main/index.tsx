@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import 'react-native-get-random-values';
 import Animated, {
   useAnimatedScrollHandler,
@@ -77,9 +77,9 @@ const Main = () => {
 
   // обновление баров, когда переходим просто из одного экрана в другой
   // TODO: нужно переделать
-  useFocusEffect(() => {
-    setRefreshing(true);
-  });
+  // useFocusEffect(() => {
+  //   setRefreshing(false);
+  // });
 
   return (
     <>
