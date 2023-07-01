@@ -1,4 +1,4 @@
-import {StatusBar, StyleSheet, TextInput, View, ScrollView} from 'react-native';
+import {StyleSheet, TextInput, View, ScrollView, StatusBar} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 
@@ -17,6 +17,7 @@ import TitleDescInput from './components/TitleDescInput';
 import ColorPicker from './components/ColorPicker';
 import RadioInputGroup from './components/RadioInputGroup';
 import {MILLISECONDS_IN_HOUR} from '../../store/constants';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Settings = () => {
   const {params} = useRoute<RootNavigationTypeRouteProp>();
@@ -26,6 +27,7 @@ const Settings = () => {
       const currentBar = state.bar.bars.find(bar => bar.id === params.id);
       const startTime = currentBar?.startTime as number;
       const endTime = currentBar?.endTime as number;
+      const timeIsOver = endTime - startTime === 0;
 
       return {
         storeTitle: currentBar?.title as string,
@@ -33,10 +35,12 @@ const Settings = () => {
         btnColor: currentBar?.btnColor as string,
         barColor: currentBar?.barColor as string,
         type: currentBar?.type,
-        value: (
-          (1 / ((endTime - startTime) / MILLISECONDS_IN_HOUR)) *
-          100
-        ).toFixed(0),
+        value: timeIsOver
+          ? 0
+          : (
+              (1 / ((endTime - startTime) / MILLISECONDS_IN_HOUR)) *
+              100
+            ).toFixed(0),
       };
     });
 
@@ -126,10 +130,15 @@ const Settings = () => {
   };
 
   return (
-    <>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.backgroundSecondary1,
+      }}>
       <StatusBar
-        backgroundColor={colors.backgroundSecondary1}
         barStyle={'dark-content'}
+        translucent
+        backgroundColor={'transparent'}
       />
       <View style={styles.container}>
         <Header title={`"${storeTitle}"`} />
@@ -176,7 +185,7 @@ const Settings = () => {
           />
         </ScrollView>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

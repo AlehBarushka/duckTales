@@ -24,10 +24,10 @@ const RadioInputGroup: React.FC<Props> = ({
   changeType,
   onBlur,
 }) => {
-  let val = value;
+  let val: number | string = value;
 
-  if (!isFinite(value)) {
-    val = 0;
+  if (val === 0) {
+    val = '';
   }
 
   const [ascInputValue, setAscInputValue] = useState(

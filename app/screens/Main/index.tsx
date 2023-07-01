@@ -1,14 +1,15 @@
 import {
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
   View,
   Text,
   RefreshControl,
+  StatusBar,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import 'react-native-get-random-values';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -79,13 +80,23 @@ const Main = () => {
     dispatch(setCurrentUpdate({id, value}));
   };
 
-  return (
-    <>
-      <StatusBar
-        backgroundColor={colors.backgroundPrimary}
-        barStyle={'dark-content'}
-      />
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      setRefreshing(!refreshing);
+    }, 5000);
 
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [refreshing]);
+
+  return (
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundPrimary}}>
+      <StatusBar
+        barStyle={'dark-content'}
+        translucent
+        backgroundColor={'transparent'}
+      />
       <View style={styles.listContainer}>
         {bars.length > 0 ? (
           <>
@@ -132,7 +143,7 @@ const Main = () => {
           <Plus color={colors.black} size={24} />
         </TouchableOpacity>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
