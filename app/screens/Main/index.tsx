@@ -4,7 +4,6 @@ import {
   View,
   Text,
   RefreshControl,
-  StatusBar,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -15,6 +14,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import {NavigationBar, StatusBar} from 'react-native-bars';
 import {v4 as uuidv4} from 'uuid';
 
 import {RootStackScreens} from '../../navigation/constants';
@@ -91,12 +91,13 @@ const Main = () => {
   }, [refreshing]);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundPrimary}}>
-      <StatusBar
-        barStyle={'dark-content'}
-        translucent
-        backgroundColor={'transparent'}
-      />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.backgroundPrimary,
+      }}>
+      <StatusBar animated={true} barStyle="dark-content" />
+      <NavigationBar barStyle="dark-content" />
       <View style={styles.listContainer}>
         {bars.length > 0 ? (
           <>

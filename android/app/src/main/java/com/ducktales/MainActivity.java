@@ -6,6 +6,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import android.os.Bundle;
 import com.zoontek.rnbootsplash.RNBootSplash; // bootsplash_screen
+import com.zoontek.rnbars.RNBars; // bars
 
 public class MainActivity extends ReactActivity {
 
@@ -22,6 +23,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     RNBootSplash.init(this); // ⬅️ initialize the splash screen
     super.onCreate(null);
+    RNBars.init(this, "dark-content");
   }
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link

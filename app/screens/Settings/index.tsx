@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View, ScrollView, StatusBar} from 'react-native';
+import {StyleSheet, TextInput, View, ScrollView} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 
@@ -133,13 +133,10 @@ const Settings = () => {
     <SafeAreaView
       style={{
         flex: 1,
+        borderWidth: 1,
         backgroundColor: colors.backgroundSecondary1,
-      }}>
-      <StatusBar
-        barStyle={'dark-content'}
-        translucent
-        backgroundColor={'transparent'}
-      />
+      }}
+      edges={['top']}>
       <View style={styles.container}>
         <Header title={`"${storeTitle}"`} />
         <ScrollView style={styles.settingsContainer}>

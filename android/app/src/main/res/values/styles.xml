@@ -1,10 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+    <!-- make AppTheme inherit from Theme.EdgeToEdge -->
+    <style name="AppTheme" parent="Theme.EdgeToEdge">
+        <!-- set bars initial styles: true = dark-content, false = light-content -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
+
 
     <!-- BootTheme should inherit from Theme.SplashScreen -->
     <style name="BootTheme" parent="Theme.SplashScreen">
